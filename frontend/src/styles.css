@@ -1,0 +1,181 @@
+/* ========== 全局 UI 设计规范（严格遵循 UI 产品设计文档） ========== */
+:root {
+  --primary: #1677FF;
+  --primary-light: #E8F3FF;
+  --success: #00B42A;
+  --danger: #F53F3F;
+  --warning: #FF7D00;
+  --skip: #86909C;
+  --text-1: #1D2129;
+  --text-2: #4E5969;
+  --text-3: #86909C;
+  --bg: #F5F7FA;
+  --card: #FFFFFF;
+  --border: #E5E6EB;
+  --radius-card: 8px;
+  --radius-btn: 6px;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", -apple-system, system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--text-2);
+  background: var(--bg);
+}
+
+/* Element Plus 主题色覆盖 */
+:root {
+  --el-color-primary: #1677FF;
+  --el-color-success: #00B42A;
+  --el-color-danger: #F53F3F;
+  --el-color-warning: #FF7D00;
+  --el-color-error: #F53F3F;
+  --el-text-color-primary: #1D2129;
+  --el-text-color-regular: #4E5969;
+  --el-text-color-secondary: #86909C;
+  --el-border-color: #E5E6EB;
+  --el-border-color-light: #E5E6EB;
+  --el-border-radius-base: 6px;
+  --el-font-size-base: 14px;
+}
+
+/* ---------- 通用布局组件 ---------- */
+.page-content {
+  padding: 24px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 0 0 20px 0;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.toolbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.empty-text {
+  color: var(--text-3);
+  font-size: 12px;
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* ---------- 状态标签 ---------- */
+.tag-method {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+}
+.method-GET { color: #1677FF; background: #E8F3FF; }
+.method-POST { color: #00B42A; background: #E8FFEA; }
+.method-PUT { color: #FF7D00; background: #FFF7E8; }
+.method-DELETE { color: #F53F3F; background: #FFECE8; }
+.method-PATCH { color: #722ED1; background: #F5E8FF; }
+
+.status-passed { color: var(--success); font-weight: 600; }
+.status-failed { color: var(--danger); font-weight: 600; }
+.status-skipped, .status-pending { color: var(--skip); font-weight: 600; }
+.status-running { color: var(--primary); font-weight: 600; }
+
+/* ---------- 数据卡片 ---------- */
+.stat-card {
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+.stat-card .stat-label {
+  font-size: 14px;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+.stat-card .stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-1);
+  line-height: 1.2;
+}
+.stat-card .stat-desc {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 6px;
+}
+
+/* ---------- 日志面板 ---------- */
+.log-panel {
+  background: #1D2129;
+  border-radius: var(--radius-card);
+  padding: 12px 16px;
+  height: 300px;
+  overflow-y: auto;
+  font-family: "Consolas", "Monaco", monospace;
+  font-size: 12px;
+  line-height: 20px;
+}
+.log-line { color: #E5E6EB; white-space: pre-wrap; word-break: break-all; }
+.log-ERROR { color: #F53F3F; }
+.log-WARN { color: #FF7D00; }
+.log-INFO { color: #E5E6EB; }
+
+/* 表格 */
+.el-table { font-size: 14px; }
+.el-table th.el-table__cell {
+  background: #F5F7FA !important;
+  color: var(--text-1);
+  font-weight: 600;
+}
+
+.json-view {
+  background: #F7F8FA;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: Consolas, Monaco, monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 300px;
+  overflow: auto;
+  margin: 0;
+}

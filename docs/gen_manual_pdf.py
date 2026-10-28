@@ -1,0 +1,198 @@
+# -*- coding: utf-8 -*-
+"""生成《使用说明书》PDF（中文，需系统中文字体）"""
+import os
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import mm
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
+from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table,
+                                TableStyle, ListFlowable, ListItem, HRFlowable)
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+FONT_PATH = "/System/Library/Fonts/STHeiti Medium.ttc"
+# 注册字体：STHeiti Medium.ttc 含 Light(0) / Medium(1) 两个子字体
+pdfmetrics.registerFont(TTFont("CN", FONT_PATH, subfontIndex=1))
+pdfmetrics.registerFont(TTFont("CN-L", FONT_PATH, subfontIndex=0))
+
+PRIMARY = colors.HexColor("#1677FF")
+TEXT1 = colors.HexColor("#1D2129")
+TEXT2 = colors.HexColor("#4E5969")
+BORDER = colors.HexColor("#E5E6EB")
+BG = colors.HexColor("#F5F7FA")
+
+styles = getSampleStyleSheet()
+def S(name, **kw):
+    base = kw.pop("parent", styles["Normal"])
+    return ParagraphStyle(name, parent=base, fontName="CN", **kw)
+
+title = S("title", fontSize=24, leading=30, textColor=TEXT1, alignment=TA_CENTER, spaceAfter=6)
+sub = S("sub", fontSize=12, leading=18, textColor=TEXT2, alignment=TA_CENTER, spaceAfter=2)
+h1 = S("h1", fontSize=15, leading=22, textColor=PRIMARY, spaceBefore=14, spaceAfter=6)
+h2 = S("h2", fontSize=12.5, leading=18, textColor=TEXT1, spaceBefore=10, spaceAfter=4)
+body = S("body", fontSize=10.5, leading=17, textColor=TEXT1, spaceAfter=4, alignment=TA_LEFT)
+small = S("small", fontSize=9, leading=14, textColor=TEXT2)
+code = S("code", fontSize=9, leading=14, textColor=colors.HexColor("#0F4C81"),
+         backColor=BG, borderPadding=6, spaceBefore=4, spaceAfter=6)
+cell = S("cell", fontSize=9.5, leading=14, textColor=TEXT1)
+cellh = S("cellh", fontSize=9.5, leading=14, textColor=colors.white)
+
+def hrule():
+    return HRFlowable(width="100%", thickness=0.6, color=BORDER, spaceBefore=4, spaceAfter=8)
+
+def kv_table(rows):
+    data = [[Paragraph(k, cellh), Paragraph(v, cell)] for k, v in rows]
+    t = Table(data, colWidths=[35*mm, 130*mm])
+    t.setStyle(TableStyle([
+        ("BACKGROUND", (0,0), (0,-1), PRIMARY),
+        ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
+        ("GRID", (0,0), (-1,-1), 0.5, BORDER),
+        ("ROWBACKGROUNDS", (1,0), (1,-1), [colors.white, BG]),
+        ("LEFTPADDING", (0,0), (-1,-1), 6), ("RIGHTPADDING", (0,0), (-1,-1), 6),
+        ("TOPPADDING", (0,0), (-1,-1), 5), ("BOTTOMPADDING", (0,0), (-1,-1), 5),
+    ]))
+    return t
+
+def bullets(items):
+    return ListFlowable(
+        [ListItem(Paragraph(x, body), leftIndent=6, value="•") for x in items],
+        bulletType="bullet", start="•", leftIndent=12)
+
+story = []
+# 封面
+story += [Spacer(1, 30*mm),
+          Paragraph("AI 驱动 Web 接口自动化测试平台", title),
+          Paragraph("使用说明书", S("t2", fontSize=18, leading=24, textColor=PRIMARY, alignment=TA_CENTER, spaceAfter=18)),
+          hrule()]
+story += [kv_table([
+    ("文档名称", "AI 驱动 Web 接口自动化测试平台 使用说明书"),
+    ("文档版本", "v1.0"),
+    ("发布日期", "2026-10-28"),
+    ("适用对象", "测试工程师、开发工程师、技术负责人、运维人员"),
+    ("适用产品", "AI 驱动 Web 接口自动化测试平台（开源版）"),
+    ("许可证", "MIT（见仓库根目录 LICENSE）"),
+])]
+story += [Spacer(1, 8*mm),
+          Paragraph("本文档为平台官方使用说明书，与《UI 产品设计文档》《产品开发文档》配套使用。阅读完本文后，您将能够独立完成环境部署、接口导入、用例生成、批量执行与报告查看，并掌握用户与权限管理能力。", small)]
+
+# 1 产品简介
+story += [hrule(), Paragraph("1. 产品简介", h1),
+          Paragraph("本平台是一款<strong>零代码、AI 全自动</strong>的接口自动化测试工具，依据产品设计与 UI 设计文档完整实现，核心目标是让测试人员无需编写脚本即可完成「接口导入 → 用例生成 → 批量执行 → 可视化报告 → 多格式导出」的完整测试闭环。", body)]
+story += [Paragraph("核心特性", h2),
+          bullets([
+            "多格式接口文档解析：支持 OpenAPI/Swagger(JSON/YAML)、Postman Collection、PDF、HTML、Markdown/文本五类文档一键导入。",
+            "AI 智能用例生成：对接任意 OpenAI 兼容大模型，按正向/反向/边界/异常自动生成；无 Key 时降级内置规则引擎，保证任何环境可完整体验。",
+            "自动化执行引擎：自动发请求、自动断言、超时重试、实时日志、随时终止。",
+            "可视化报告：通过率、模块成功率、用例详情（请求/响应/断言/失败原因）一目了然。",
+            "多格式导出：用例文档（Word/PDF/Excel）、测试报告（HTML/PDF/Excel）。",
+            "用户与权限（RBAC）：基于角色与菜单权限的访问控制，支持多成员协作。",
+          ])]
+
+# 2 环境要求
+story += [hrule(), Paragraph("2. 环境要求", h1),
+          kv_table([
+            ("Python", "≥ 3.10（推荐 3.11+）"),
+            ("Node.js", "≥ 16（推荐 18+）"),
+            ("npm", "≥ 8"),
+            ("操作系统", "Windows / macOS / Linux"),
+            ("数据库", "SQLite（内置，可平滑切换 MySQL）"),
+            ("大模型（可选）", "OpenAI 兼容，仅 AI 用例生成需要"),
+          ]),
+          Paragraph("说明：平台默认使用内置 SQLite，无需额外安装数据库；AI 能力为可选增强，未配置 API Key 时不影响核心测试流程。", small)]
+
+# 3 安装与部署
+story += [hrule(), Paragraph("3. 安装与部署", h1),
+          Paragraph("方式一：一键脚本（推荐）", h2),
+          Paragraph("cd api-test-platform<br/>bash start.sh&nbsp;&nbsp;# Windows 可用 Git Bash", code),
+          Paragraph("脚本自动完成：创建虚拟环境 → 安装依赖 → 构建前端 → 启动服务（含演示 Mock 接口服务）。启动后访问 http://127.0.0.1:8000，演示账号 admin / admin123。", body),
+          Paragraph("方式二：手动启动", h2),
+          Paragraph("python3 -m venv venv &amp;&amp; source venv/bin/activate<br/>"
+                    "pip install -r requirements.txt<br/>"
+                    "cd backend &amp;&amp; python app.py&nbsp;&nbsp;# http://127.0.0.1:8000<br/>"
+                    "cd frontend &amp;&amp; npm install &amp;&amp; npm run dev&nbsp;&nbsp;# http://127.0.0.1:5173<br/>"
+                    "python mock_api.py&nbsp;&nbsp;# http://127.0.0.1:8099（演示接口，可选）", code),
+          Paragraph("生产模式：前端执行 npm run build 输出到 web/，由后端直接托管，访问 http://127.0.0.1:8000 即可使用完整系统。", body)]
+
+# 4 快速上手
+story += [hrule(), Paragraph("4. 快速上手（五分钟跑通全流程）", h1),
+          bullets([
+            "登录：使用 admin / admin123 登录平台。",
+            "新建项目：进入「项目管理」，点击「新建项目」，填写名称与描述。",
+            "上传接口文档：进入项目 → 「接口管理」→「上传文档」，拖入文档，系统自动解析并导入接口。",
+            "配置测试环境：进入「环境配置」，填写 Base URL、全局请求头、超时与重试，并设为默认环境。",
+            "AI 生成用例：进入「AI用例生成」，选择「全项目批量」，勾选用例类型，点击「开始生成」。",
+            "批量执行：进入「用例管理」或「测试执行」，选择用例与环境，点击「执行」，实时查看进度与日志。",
+            "查看报告：进入「测试报告」，查看通过率与详情，支持在线查看或导出 Word/PDF/Excel。",
+          ])]
+
+# 5 功能详解
+story += [hrule(), Paragraph("5. 功能详解", h1),
+          bullets([
+            "项目管理：增删改查、搜索；进入项目数据自动隔离；删除二次确认。",
+            "环境配置：多环境、域名、全局请求头(KV 动态增删)、超时、重试；默认环境高亮；执行时自动拼接域名+路径。",
+            "接口文档解析：拖拽上传五类格式，展示成功条数与失败原因；样例见 docs/samples/。",
+            "接口管理：分页列表、方法彩色标签、查看/编辑/删除/生成用例/手动录入。",
+            "AI 用例生成：单接口/全项目批量；仅正向/全量；实时进度与统计。",
+            "用例管理：筛选、优先级、批量执行/删除、单条执行、文档在线预览。",
+            "测试执行：环境/范围/超时/重试配置、实时进度日志、随时终止、失败重跑。",
+            "测试报告：六维概览、通过率饼图、模块成功率柱状图、用例详情展开、多格式导出。",
+            "首页仪表盘：项目/接口/用例/用户角色统计、7 日趋势、状态饼图、最近任务。",
+            "系统 AI 配置：模型/API Key/BaseURL/超时、连通性测试、全局生效。",
+          ])]
+
+# 6 RBAC
+story += [hrule(), Paragraph("6. 用户与权限管理（RBAC）", h1),
+          Paragraph("入口：登录 admin → 左侧「用户与权限」。仅拥有 users 菜单权限的账号可见该入口。", body),
+          Paragraph("权限模型", h2),
+          bullets([
+            "菜单：功能最小权限单元，对应侧边栏入口（共 10 个）。",
+            "角色：聚合一组菜单权限，可复用。内置：超级管理员（全部）、测试工程师（测试全流程）、只读访客（仅浏览）。",
+            "用户：绑定角色并可单独微调菜单权限；最终权限 = 用户自身菜单权限（优先），否则取角色权限。",
+          ]),
+          Paragraph("操作步骤", h2),
+          bullets([
+            "进入「角色管理」，新建角色并勾选允许访问的菜单，保存。",
+            "进入「用户管理」→「新建用户」，填写用户名/密码(≥6位)/昵称，选择角色；如需微调，展开「菜单权限」按需勾选（留空继承角色）。",
+            "保存后该用户登录将仅看到被授权的菜单。",
+          ]),
+          Paragraph("安全约束", h2),
+          bullets([
+            "内置角色不可删除；角色仍有用户绑定时不可删除。",
+            "至少保留一名管理员：不能禁用/删除最后一个管理员，也不能修改自己的角色。",
+            "生产环境请务必在首次登录后修改 admin 默认密码。",
+          ])]
+
+# 7 FAQ
+story += [hrule(), Paragraph("7. 常见问题（FAQ）", h1),
+          Paragraph("Q1：上传 PDF 后接口解析为空？", h2),
+          Paragraph("A：平台仅支持<strong>文本版 PDF</strong>（由 Word/Markdown 导出）。扫描件/图片版无法提取文本，请改用 OpenAPI/Postman/HTML/Markdown 或文本版 PDF。", body),
+          Paragraph("Q2：执行用例提示接口未拼接域名/请求失败？", h2),
+          Paragraph("A：请先到「环境配置」填写 Base URL 并设为默认环境；执行时也可在下拉指定环境。引擎会拼接「环境域名 + 接口路径」。", body),
+          Paragraph("Q3：AI 用例生成没有反应/报错？", h2),
+          Paragraph("A：检查「系统 AI 配置」的 API Key/BaseURL/模型名，并用「连通性测试」验证；未配置 Key 时自动降级内置规则引擎仍可生成。", body),
+          Paragraph("Q4：登录后左侧菜单空白/缺少某些入口？", h2),
+          Paragraph("A：菜单按当前账号权限动态渲染。请以 admin 登录确认；若曾用旧后端，请硬刷新浏览器（Ctrl/Cmd+Shift+R）并重新登录。", body),
+          Paragraph("Q5：导出 Word/PDF/Excel 失败？", h2),
+          Paragraph("A：依赖 python-docx / reportlab / openpyxl，请确认已 pip install -r requirements.txt 完成安装。", body)]
+
+# 8 合规声明
+story += [hrule(), Paragraph("8. 注意事项与合规声明", h1),
+          bullets([
+            "本软件按 MIT 许可证开源发布（见 LICENSE），仅供学习、演示与内部测试，不提供任何担保。",
+            "演示账号 admin/admin123 为初始测试凭据，生产环境请立即修改；切勿在公开仓库提交真实 API Key、数据库或敏感数据（仓库已 .gitignore 排除 *.db、.env 等）。",
+            "AI 用例生成依赖使用者自建的 OpenAI 兼容模型服务，相关密钥自行配置与保管。",
+            "请仅对拥有合法权限的系统与目标接口进行测试，遵守所在组织安全规范与适用法律法规。",
+            "文档如与产品实际部署环境不一致，以实际环境与安全规范为准。",
+          ])]
+story += [Spacer(1, 6*mm), hrule(),
+          Paragraph("文档结束 —— AI 驱动 Web 接口自动化测试平台 使用说明书 v1.0", small)]
+
+out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "使用说明书.pdf")
+doc = SimpleDocTemplate(out, pagesize=A4,
+                        leftMargin=20*mm, rightMargin=20*mm,
+                        topMargin=18*mm, bottomMargin=18*mm,
+                        title="AI 驱动 Web 接口自动化测试平台 使用说明书",
+                        author="Aipro")
+doc.build(story)
+print("PDF written:", out, os.path.getsize(out), "bytes")

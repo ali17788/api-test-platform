@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI驱动Web接口自动化测试平台 API v1.0.0</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#1d2129;background:#f5f7fa}
+.wrap{display:flex;max-width:1280px;margin:0 auto}
+.side{width:230px;flex:0 0 230px;padding:24px 16px;position:sticky;top:0;height:100vh;overflow:auto;background:#fff;border-right:1px solid #e5e6eb}
+.side h3{font-size:13px;color:#86909c;margin:16px 0 8px;font-weight:600}
+.side ul{list-style:none;padding:0;margin:0}
+.side li a{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:6px;color:#4e5969;text-decoration:none;font-size:13px}
+.side li a:hover{background:#f2f3f5;color:#1677ff}
+.side li em{font-style:normal;font-size:12px;color:#a9aeb8}
+.main{flex:1;padding:28px 32px;min-width:0}
+h1{font-size:24px;margin:0 0 6px}
+.meta{color:#86909c;font-size:13px;margin-bottom:24px}
+h2.sec{font-size:18px;margin:32px 0 14px;padding:14px 16px;background:#fff;border-left:4px solid #1677ff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+h2.sec em{font-style:normal;font-size:13px;color:#86909c;margin-left:8px}
+table{width:100%;border-collapse:collapse;margin:6px 0 14px;background:#fff;font-size:13px;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+th{background:#f5f7fa;text-align:left;padding:9px 12px;font-weight:600;color:#4e5969;border-bottom:1px solid #e5e6eb}
+td{padding:8px 12px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+code{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.5px}
+.path{background:#f2f3f5;padding:2px 8px;border-radius:4px;color:#333}
+.api{background:#fff;border-radius:8px;padding:16px 18px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.api-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.api-name{font-weight:600;font-size:15px}
+.badge{font-size:11px;padding:2px 8px;border-radius:10px}
+.badge.auth{background:#e8f3ff;color:#1677ff}
+.badge.noauth{background:#f2f3f5;color:#86909c}
+.desc{color:#4e5969;margin:4px 0 10px}
+.sub{font-size:13px;font-weight:600;color:#4e5969;margin:14px 0 4px}
+pre.code{background:#f7f8fa;border:1px solid #e5e6eb;border-radius:6px;padding:12px 14px;overflow:auto;font-size:12.5px;line-height:1.6;margin:6px 0 0}
+.m{font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;color:#fff;letter-spacing:.5px}
+.m-GET{background:#1677ff}.m-POST{background:#00b42a}.m-PUT{background:#ff7d00}.m-DELETE{background:#f53f3f}
+.notes{margin:4px 0 0;padding-left:20px;color:#4e5969;font-size:13px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.card{background:#fff;border-radius:8px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card .v{font-size:26px;font-weight:700;color:#1677ff}
+.card .k{font-size:12px;color:#86909c}
+.bars{background:#fff;border-radius:8px;padding:16px 18px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;font-size:13px}
+.bar-label{width:88px;color:#4e5969;text-align:right;flex:0 0 88px}
+.bar-track{flex:1;height:14px;background:#f2f3f5;border-radius:7px;overflow:hidden}
+.bar-track i{display:block;height:100%;background:linear-gradient(90deg,#1677ff,#4096ff);border-radius:7px}
+.bar-val{width:28px;color:#4e5969;font-variant-numeric:tabular-nums}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.panel{background:#fff;border-radius:8px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.panel h4{margin:0 0 10px;font-size:14px}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.side{display:none}}
+</style></head><body>
+<div class="wrap">
+<nav class="side"><h3>接口目录</h3><ul><li><a href='#认证管理'>认证管理<em>3</em></a></li><li><a href='#项目管理'>项目管理<em>5</em></a></li><li><a href='#环境配置'>环境配置<em>4</em></a></li><li><a href='#接口管理'>接口管理<em>7</em></a></li><li><a href='#用例管理'>用例管理<em>8</em></a></li><li><a href='#AI 能力'>AI 能力<em>6</em></a></li><li><a href='#测试执行'>测试执行<em>4</em></a></li><li><a href='#测试报告'>测试报告<em>4</em></a></li><li><a href='#仪表盘'>仪表盘<em>1</em></a></li><li><a href='#用户与权限'>用户与权限<em>9</em></a></li><li><a href='#系统服务'>系统服务<em>3</em></a></li></ul></nav>
+<main class="main">
+<h1>AI驱动Web接口自动化测试平台 API</h1>
+<div class="meta">版本 1.0.0　·　BaseURL <code>http://127.0.0.1:8000</code>　·　共 54 个接口　·　2026-10-27</div>
+<div class="cards">
+  <div class="card"><div class="v">54</div><div class="k">接口总数</div></div>
+  <div class="card"><div class="v">38</div><div class="k">路径数</div></div>
+  <div class="card"><div class="v">11</div><div class="k">业务模块</div></div>
+  <div class="card"><div class="v">52</div><div class="k">需鉴权接口</div></div>
+</div>
+<div class="bars">
+  <h4 style="margin:0 0 12px;font-size:14px">模块分布</h4>
+  <div class='bar-row'><span class='bar-label'>认证管理</span><span class='bar-track'><i style='width:33%'></i></span><span class='bar-val'>3</span></div><div class='bar-row'><span class='bar-label'>项目管理</span><span class='bar-track'><i style='width:56%'></i></span><span class='bar-val'>5</span></div><div class='bar-row'><span class='bar-label'>环境配置</span><span class='bar-track'><i style='width:44%'></i></span><span class='bar-val'>4</span></div><div class='bar-row'><span class='bar-label'>接口管理</span><span class='bar-track'><i style='width:78%'></i></span><span class='bar-val'>7</span></div><div class='bar-row'><span class='bar-label'>用例管理</span><span class='bar-track'><i style='width:89%'></i></span><span class='bar-val'>8</span></div><div class='bar-row'><span class='bar-label'>AI 能力</span><span class='bar-track'><i style='width:67%'></i></span><span class='bar-val'>6</span></div><div class='bar-row'><span class='bar-label'>测试执行</span><span class='bar-track'><i style='width:44%'></i></span><span class='bar-val'>4</span></div><div class='bar-row'><span class='bar-label'>测试报告</span><span class='bar-track'><i style='width:44%'></i></span><span class='bar-val'>4</span></div><div class='bar-row'><span class='bar-label'>仪表盘</span><span class='bar-track'><i style='width:11%'></i></span><span class='bar-val'>1</span></div><div class='bar-row'><span class='bar-label'>用户与权限</span><span class='bar-track'><i style='width:100%'></i></span><span class='bar-val'>9</span></div><div class='bar-row'><span class='bar-label'>系统服务</span><span class='bar-track'><i style='width:33%'></i></span><span class='bar-val'>3</span></div>
+</div>
+<div class="two">
+  <div class="panel"><h4>按业务模块</h4><table><tr><th>模块</th><th>数量</th><th>占比</th><th>说明</th></tr><tr><td><b>认证管理</b></td><td class=num>3</td><td class=num>5.6%</td><td>登录鉴权与当前用户信息</td></tr><tr><td><b>项目管理</b></td><td class=num>5</td><td class=num>9.3%</td><td>测试项目的增删改查与概览统计</td></tr><tr><td><b>环境配置</b></td><td class=num>4</td><td class=num>7.4%</td><td>项目下的多套测试环境（域名/请求头/超时/重试）</td></tr><tr><td><b>接口管理</b></td><td class=num>7</td><td class=num>13.0%</td><td>被测接口 CRUD、OpenAPI/Swagger/Postman 文档解析导入</td></tr><tr><td><b>用例管理</b></td><td class=num>8</td><td class=num>14.8%</td><td>测试用例 CRUD、多条件筛选、批量执行与删除</td></tr><tr><td><b>AI 能力</b></td><td class=num>6</td><td class=num>11.1%</td><td>AI 配置与连通性测试、AI 用例生成、用例文档智能整理</td></tr><tr><td><b>测试执行</b></td><td class=num>4</td><td class=num>7.4%</td><td>执行任务启动、实时状态/日志轮询、终止、失败重跑</td></tr><tr><td><b>测试报告</b></td><td class=num>4</td><td class=num>7.4%</td><td>报告列表/详情、HTML/Excel/PDF 导出、删除</td></tr><tr><td><b>仪表盘</b></td><td class=num>1</td><td class=num>1.9%</td><td>首页全局统计数据聚合</td></tr><tr><td><b>用户与权限</b></td><td class=num>9</td><td class=num>16.7%</td><td>菜单目录、角色管理（菜单权限模板）与用户管理（分配角色与菜单权限）</td></tr><tr><td><b>系统服务</b></td><td class=num>3</td><td class=num>5.6%</td><td>健康检查、操作日志、用例文档导出</td></tr></table></div>
+  <div class="panel"><h4>按 HTTP 方法</h4><table><tr><th>方法</th><th>数量</th><th>占比</th></tr><tr><td><span class='m m-GET'>GET</span></td><td class=num>23</td><td class=num>42.6%</td></tr><tr><td><span class='m m-POST'>POST</span></td><td class=num>18</td><td class=num>33.3%</td></tr><tr><td><span class='m m-PUT'>PUT</span></td><td class=num>6</td><td class=num>11.1%</td></tr><tr><td><span class='m m-DELETE'>DELETE</span></td><td class=num>7</td><td class=num>13.0%</td></tr></table>
+  <h4 style="margin-top:18px">统一响应</h4><pre class="code">{
+  "code": 0,
+  "msg": "操作成功",
+  "data": "{业务数据}"
+}</pre>
+  <p style="font-size:13px;color:#4e5969;margin:8px 0 0">鉴权：请求头 <code>Authorization: &lt;token&gt;</code>（登录接口返回）</p></div>
+</div>
+<h2 class='sec'><span class='sec-idx'>登录鉴权与当前用户信息</span>认证管理 <em>3 个接口</em></h2>
+<div class="api" id="api-1">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/auth/login</code>
+    <span class="api-name">用户登录</span>
+    <span class="badge noauth">免鉴权</span>
+  </div>
+  <p class="desc">校验用户名密码，成功后下发 Token，后续请求需在请求头携带。</p>
+  <div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>username</code></td><td>string</td><td>是</td><td>-</td><td>用户名</td></tr><tr><td><code>password</code></td><td>string</td><td>是</td><td>-</td><td>密码</td></tr></table><pre class='code'>{
+  "username": "",
+  "password": ""
+}</pre><div class='sub'>说明</div><ul class='notes'><li>初始账号：admin / admin123</li><li>Token 存于服务端 tokens 表，登出即失效</li><li>role_name 为角色名称，menus 为当前用户实际拥有的菜单权限 key 列表</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "token": "8f3c...a91e2b",
+    "username": "admin",
+    "role": "admin",
+    "role_name": "超级管理员",
+    "menus": [
+      "dashboard",
+      "projects",
+      "envs",
+      "apis",
+      "ai-generate",
+      "cases",
+      "execution",
+      "reports",
+      "ai-config",
+      "users"
+    ]
+  }
+}</pre>
+</div>
+<div class="api" id="api-2">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/auth/logout</code>
+    <span class="api-name">退出登录</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">销毁当前 Token。</p>
+  <div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "已退出登录",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-3">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/auth/me</code>
+    <span class="api-name">获取当前用户</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">返回当前登录用户的用户名、角色名称与实际菜单权限。</p>
+  <div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "username": "admin",
+    "role": "admin",
+    "role_name": "超级管理员",
+    "menus": [
+      "dashboard",
+      "projects",
+      "envs",
+      "apis",
+      "ai-generate",
+      "cases",
+      "execution",
+      "reports",
+      "ai-config",
+      "users"
+    ]
+  }
+}</pre>
+</div><h2 class='sec'><span class='sec-idx'>测试项目的增删改查与概览统计</span>项目管理 <em>5 个接口</em></h2>
+<div class="api" id="api-4">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/projects</code>
+    <span class="api-name">项目列表</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">返回全部项目，并附带每个项目的接口数、用例数。</p>
+  <div class='sub'>查询参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>keyword</code></td><td>string</td><td>否</td><td><code></code></td><td>项目名称模糊搜索</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": [
+    {
+      "id": 1,
+      "name": "电商中台接口",
+      "description": "订单/用户/商品",
+      "owner": "admin",
+      "api_count": 4,
+      "case_count": 28,
+      "created_at": "2026-10-27 11:20:03"
+    }
+  ]
+}</pre>
+</div>
+<div class="api" id="api-5">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/projects</code>
+    <span class="api-name">创建项目</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">新建测试项目，创建者为当前登录用户。</p>
+  <div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>name</code></td><td>string</td><td>是</td><td>-</td><td>项目名称</td></tr><tr><td><code>description</code></td><td>string</td><td>否</td><td><code></code></td><td>项目描述</td></tr></table><pre class='code'>{
+  "name": "",
+  "description": ""
+}</pre><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "项目创建成功",
+  "data": {
+    "id": 1
+  }
+}</pre>
+</div>
+<div class="api" id="api-6">
+  <div class="api-head">
+    <span class="m m-PUT">PUT</span>
+    <code class="path">/api/projects/{pid}</code>
+    <span class="api-name">编辑项目</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">修改项目名称与描述。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>name</code></td><td>string</td><td>是</td><td>-</td><td>项目名称</td></tr><tr><td><code>description</code></td><td>string</td><td>否</td><td><code></code></td><td>项目描述</td></tr></table><pre class='code'>{
+  "name": "",
+  "description": ""
+}</pre><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "项目更新成功",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-7">
+  <div class="api-head">
+    <span class="m m-DELETE">DELETE</span>
+    <code class="path">/api/projects/{pid}</code>
+    <span class="api-name">删除项目</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">删除项目，级联清除该项目下的环境、接口、用例与执行任务。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>说明</div><ul class='notes'><li>危险操作：级联删除不可恢复</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "项目已删除",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-8">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/projects/{pid}/overview</code>
+    <span class="api-name">项目概览</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">返回项目基本信息与接口数、用例数、环境数。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "project": {
+      "id": 1,
+      "name": "电商中台接口",
+      "description": "订单/用户/商品",
+      "owner": "admin"
+    },
+    "api_count": 4,
+    "case_count": 28,
+    "env_count": 2
+  }
+}</pre>
+</div><h2 class='sec'><span class='sec-idx'>项目下的多套测试环境（域名/请求头/超时/重试）</span>环境配置 <em>4 个接口</em></h2>
+<div class="api" id="api-9">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/projects/{pid}/envs</code>
+    <span class="api-name">环境列表</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">返回项目下所有测试环境，默认环境排在首位。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": [
+    {
+      "id": 1,
+      "project_id": 1,
+      "name": "本地Mock环境",
+      "base_url": "http://127.0.0.1:8099",
+      "headers": [
+        {
+          "key": "Authorization",
+          "value": "mock"
+        }
+      ],
+      "timeout": 10,
+      "retry": 1,
+      "is_default": 1
+    }
+  ]
+}</pre>
+</div>
+<div class="api" id="api-10">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/projects/{pid}/envs</code>
+    <span class="api-name">创建环境</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">新增测试环境；若设为默认环境，会自动取消该项目下其它环境的默认标记。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>name</code></td><td>string</td><td>是</td><td>-</td><td>环境名称</td></tr><tr><td><code>base_url</code></td><td>string</td><td>是</td><td>-</td><td>接口域名/BaseURL</td></tr><tr><td><code>headers</code></td><td>array&lt;object&gt;</td><td>否</td><td><code>[]</code></td><td>全局请求头 [{"key","value"}]</td></tr><tr><td><code>timeout</code></td><td>integer</td><td>否</td><td><code>10</code></td><td>单请求超时（秒）</td></tr><tr><td><code>retry</code></td><td>integer</td><td>否</td><td><code>0</code></td><td>失败重试次数</td></tr><tr><td><code>is_default</code></td><td>boolean</td><td>否</td><td><code>False</code></td><td>是否为默认环境</td></tr></table><pre class='code'>{
+  "name": "",
+  "base_url": "",
+  "headers": [],
+  "timeout": 10,
+  "retry": 0,
+  "is_default": false
+}</pre><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "环境创建成功",
+  "data": {
+    "id": 1
+  }
+}</pre>
+</div>
+<div class="api" id="api-11">
+  <div class="api-head">
+    <span class="m m-PUT">PUT</span>
+    <code class="path">/api/envs/{eid}</code>
+    <span class="api-name">编辑环境</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">修改指定环境配置。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>eid</code></td><td>integer</td><td>是</td><td>-</td><td>环境ID</td></tr></table><div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>name</code></td><td>string</td><td>是</td><td>-</td><td>环境名称</td></tr><tr><td><code>base_url</code></td><td>string</td><td>是</td><td>-</td><td>接口域名/BaseURL</td></tr><tr><td><code>headers</code></td><td>array&lt;object&gt;</td><td>否</td><td><code>[]</code></td><td>全局请求头</td></tr><tr><td><code>timeout</code></td><td>integer</td><td>否</td><td><code>10</code></td><td>超时（秒）</td></tr><tr><td><code>retry</code></td><td>integer</td><td>否</td><td><code>0</code></td><td>重试次数</td></tr><tr><td><code>is_default</code></td><td>boolean</td><td>否</td><td><code>False</code></td><td>默认环境</td></tr></table><pre class='code'>{
+  "name": "",
+  "base_url": "",
+  "headers": [],
+  "timeout": 10,
+  "retry": 0,
+  "is_default": false
+}</pre><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "环境更新成功",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-12">
+  <div class="api-head">
+    <span class="m m-DELETE">DELETE</span>
+    <code class="path">/api/envs/{eid}</code>
+    <span class="api-name">删除环境</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">删除指定测试环境。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>eid</code></td><td>integer</td><td>是</td><td>-</td><td>环境ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "环境已删除",
+  "data": null
+}</pre>
+</div><h2 class='sec'><span class='sec-idx'>被测接口 CRUD、OpenAPI/Swagger/Postman 文档解析导入</span>接口管理 <em>7 个接口</em></h2>
+<div class="api" id="api-13">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/projects/{pid}/apis</code>
+    <span class="api-name">接口列表（分页）</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">分页返回项目下接口，支持名称/路径模糊搜索。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>查询参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>keyword</code></td><td>string</td><td>否</td><td><code></code></td><td>名称或路径模糊搜索</td></tr><tr><td><code>page</code></td><td>integer</td><td>否</td><td><code>1</code></td><td>页码</td></tr><tr><td><code>size</code></td><td>integer</td><td>否</td><td><code>10</code></td><td>每页条数</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "total": 4,
+    "list": [
+      {
+        "id": 1,
+        "project_id": 1,
+        "name": "查询用户列表",
+        "method": "GET",
+        "path": "/api/users",
+        "module": "用户管理",
+        "headers": {},
+        "query_params": {
+          "page": 1,
+          "size": 10
+        },
+        "body": {},
+        "response_schema": {
+          "code": 0,
+          "data": {
+            "total": 100
+          }
+        }
+      }
+    ]
+  }
+}</pre>
+</div>
+<div class="api" id="api-14">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/projects/{pid}/apis/all</code>
+    <span class="api-name">接口全量列表</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">不分页返回项目下全部接口，供下拉选择/批量操作使用。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": [
+    {
+      "id": 1,
+      "name": "查询用户列表",
+      "method": "GET",
+      "path": "/api/users",
+      "module": "用户管理"
+    }
+  ]
+}</pre>
+</div>
+<div class="api" id="api-15">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/apis/{aid}</code>
+    <span class="api-name">接口详情</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">返回单个接口的完整定义（请求头/查询参数/请求体/响应结构）。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>aid</code></td><td>integer</td><td>是</td><td>-</td><td>接口ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "id": 1,
+    "name": "查询用户列表",
+    "method": "GET",
+    "path": "/api/users",
+    "module": "用户管理",
+    "headers": {},
+    "query_params": {},
+    "body": {},
+    "response_schema": {}
+  }
+}</pre>
+</div>
+<div class="api" id="api-16">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/projects/{pid}/apis</code>
+    <span class="api-name">新增接口</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">手动录入被测接口定义。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>name</code></td><td>string</td><td>是</td><td>-</td><td>接口名称</td></tr><tr><td><code>method</code></td><td>string</td><td>否</td><td><code>GET</code></td><td>请求方法</td></tr><tr><td><code>path</code></td><td>string</td><td>否</td><td><code>/</code></td><td>接口路径</td></tr><tr><td><code>module</code></td><td>string</td><td>否</td><td><code>默认模块</code></td><td>所属模块</td></tr><tr><td><code>headers</code></td><td>object</td><td>否</td><td><code>{}</code></td><td>请求头</td></tr><tr><td><code>query_params</code></td><td>object</td><td>否</td><td><code>{}</code></td><td>查询参数</td></tr><tr><td><code>body</code></td><td>object</td><td>否</td><td><code>{}</code></td><td>请求体</td></tr><tr><td><code>response_schema</code></td><td>object</td><td>否</td><td><code>{}</code></td><td>响应结构</td></tr></table><pre class='code'>{
+  "name": "",
+  "method": "GET",
+  "path": "/",
+  "module": "默认模块",
+  "headers": {},
+  "query_params": {},
+  "body": {},
+  "response_schema": {}
+}</pre><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "接口创建成功",
+  "data": {
+    "id": 1
+  }
+}</pre>
+</div>
+<div class="api" id="api-17">
+  <div class="api-head">
+    <span class="m m-PUT">PUT</span>
+    <code class="path">/api/apis/{aid}</code>
+    <span class="api-name">编辑接口</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">修改接口定义。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>aid</code></td><td>integer</td><td>是</td><td>-</td><td>接口ID</td></tr></table><div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>name</code></td><td>string</td><td>是</td><td>-</td><td>接口名称</td></tr><tr><td><code>method</code></td><td>string</td><td>否</td><td><code>GET</code></td><td>请求方法</td></tr><tr><td><code>path</code></td><td>string</td><td>否</td><td><code>/</code></td><td>接口路径</td></tr><tr><td><code>module</code></td><td>string</td><td>否</td><td><code>默认模块</code></td><td>所属模块</td></tr><tr><td><code>headers</code></td><td>object</td><td>否</td><td><code>{}</code></td><td>请求头</td></tr><tr><td><code>query_params</code></td><td>object</td><td>否</td><td><code>{}</code></td><td>查询参数</td></tr><tr><td><code>body</code></td><td>object</td><td>否</td><td><code>{}</code></td><td>请求体</td></tr><tr><td><code>response_schema</code></td><td>object</td><td>否</td><td><code>{}</code></td><td>响应结构</td></tr></table><pre class='code'>{
+  "name": "",
+  "method": "GET",
+  "path": "/",
+  "module": "默认模块",
+  "headers": {},
+  "query_params": {},
+  "body": {},
+  "response_schema": {}
+}</pre><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "接口更新成功",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-18">
+  <div class="api-head">
+    <span class="m m-DELETE">DELETE</span>
+    <code class="path">/api/apis/{aid}</code>
+    <span class="api-name">删除接口</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">删除接口，并级联删除其下的全部测试用例。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>aid</code></td><td>integer</td><td>是</td><td>-</td><td>接口ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "接口已删除",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-19">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/projects/{pid}/apis/upload</code>
+    <span class="api-name">上传接口文档解析</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">上传接口文档自动解析批量入库，同 method+path 自动去重。支持 5 类格式：OpenAPI/Swagger（json/yaml）、Postman Collection（json）、PDF、HTML、Markdown/文本。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>查询参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>file</code></td><td>file(binary)</td><td>是</td><td>-</td><td>文档文件，multipart/form-data 上传，≤20MB</td></tr></table><div class='sub'>说明</div><ul class='notes'><li>Content-Type: multipart/form-data</li><li>支持后缀：.json / .yaml / .yml / .pdf / .html / .htm / .md / .txt，其他后缀返回 400</li><li>PDF 需为文本版（Word/Markdown 导出），扫描件图片版无法提取文本</li><li>PDF/HTML 解析为启发式：识别「请求方法+接口路径」行或「接口名称/接口路径/请求方式」标签，并解析含「参数名/类型/必填/说明」的参数表，按 GET/DELETE→query、其余→body 归类</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "接口文档解析完成，共 12 个有效接口，新增入库 9 个（重复已跳过）",
+  "data": {
+    "parsed": 12,
+    "inserted": 9
+  }
+}</pre>
+</div><h2 class='sec'><span class='sec-idx'>测试用例 CRUD、多条件筛选、批量执行与删除</span>用例管理 <em>8 个接口</em></h2>
+<div class="api" id="api-20">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/projects/{pid}/cases</code>
+    <span class="api-name">用例列表（分页）</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">多条件筛选分页查询用例，结果按【模块→接口→用例类型→优先级】标准化排序。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>查询参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>api_id</code></td><td>integer</td><td>否</td><td>-</td><td>按接口筛选</td></tr><tr><td><code>case_type</code></td><td>string</td><td>否</td><td><code></code></td><td>用例类型：正向/反向/边界/异常</td></tr><tr><td><code>priority</code></td><td>string</td><td>否</td><td><code></code></td><td>优先级：P0/P1/P2</td></tr><tr><td><code>keyword</code></td><td>string</td><td>否</td><td><code></code></td><td>用例名称模糊搜索</td></tr><tr><td><code>page</code></td><td>integer</td><td>否</td><td><code>1</code></td><td>页码</td></tr><tr><td><code>size</code></td><td>integer</td><td>否</td><td><code>10</code></td><td>每页条数</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "total": 28,
+    "list": [
+      {
+        "id": 1,
+        "project_id": 1,
+        "api_id": 1,
+        "api_name": "查询用户列表",
+        "method": "GET",
+        "path": "/api/users",
+        "module": "用户管理",
+        "name": "查询用户列表-正向-正常分页查询",
+        "case_type": "正向",
+        "priority": "P0",
+        "steps": "1. 构造分页参数 2. 发起GET请求 3. 校验响应",
+        "request_data": {
+          "page": 1,
+          "size": 10
+        },
+        "expected": {
+          "status_code": 200,
+          "body_contains": "code"
+        },
+        "source": "AI",
+        "last_status": "passed"
+      }
+    ]
+  }
+}</pre>
+</div>
+<div class="api" id="api-21">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/cases/{cid}</code>
+    <span class="api-name">用例详情</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">返回单条用例完整定义。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>cid</code></td><td>integer</td><td>是</td><td>-</td><td>用例ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "id": 1,
+    "name": "查询用户列表-正向-正常分页查询",
+    "case_type": "正向",
+    "priority": "P0",
+    "request_data": {},
+    "expected": {
+      "status_code": 200
+    }
+  }
+}</pre>
+</div>
+<div class="api" id="api-22">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/projects/{pid}/cases</code>
+    <span class="api-name">新增用例</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">手动创建测试用例，source 标记为 MANUAL。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>api_id</code></td><td>integer</td><td>是</td><td>-</td><td>所属接口ID</td></tr><tr><td><code>name</code></td><td>string</td><td>是</td><td>-</td><td>用例名称</td></tr><tr><td><code>case_type</code></td><td>string</td><td>否</td><td><code>正向</code></td><td>用例类型</td></tr><tr><td><code>priority</code></td><td>string</td><td>否</td><td><code>P1</code></td><td>优先级</td></tr><tr><td><code>steps</code></td><td>string</td><td>否</td><td><code></code></td><td>测试步骤描述</td></tr><tr><td><code>request_data</code></td><td>object</td><td>否</td><td><code>{}</code></td><td>请求数据（query/body）</td></tr><tr><td><code>expected</code></td><td>object</td><td>否</td><td><code>{}</code></td><td>预期结果（状态码/响应包含等断言）</td></tr></table><pre class='code'>{
+  "api_id": 0,
+  "name": "",
+  "case_type": "正向",
+  "priority": "P1",
+  "steps": "",
+  "request_data": {},
+  "expected": {}
+}</pre><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "用例创建成功",
+  "data": {
+    "id": 1
+  }
+}</pre>
+</div>
+<div class="api" id="api-23">
+  <div class="api-head">
+    <span class="m m-PUT">PUT</span>
+    <code class="path">/api/cases/{cid}</code>
+    <span class="api-name">编辑用例</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">修改测试用例。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>cid</code></td><td>integer</td><td>是</td><td>-</td><td>用例ID</td></tr></table><div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>api_id</code></td><td>integer</td><td>是</td><td>-</td><td>所属接口ID</td></tr><tr><td><code>name</code></td><td>string</td><td>是</td><td>-</td><td>用例名称</td></tr><tr><td><code>case_type</code></td><td>string</td><td>否</td><td><code>正向</code></td><td>用例类型</td></tr><tr><td><code>priority</code></td><td>string</td><td>否</td><td><code>P1</code></td><td>优先级</td></tr><tr><td><code>steps</code></td><td>string</td><td>否</td><td><code></code></td><td>测试步骤</td></tr><tr><td><code>request_data</code></td><td>object</td><td>否</td><td><code>{}</code></td><td>请求数据</td></tr><tr><td><code>expected</code></td><td>object</td><td>否</td><td><code>{}</code></td><td>预期结果</td></tr></table><pre class='code'>{
+  "api_id": 0,
+  "name": "",
+  "case_type": "正向",
+  "priority": "P1",
+  "steps": "",
+  "request_data": {},
+  "expected": {}
+}</pre><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "用例更新成功",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-24">
+  <div class="api-head">
+    <span class="m m-DELETE">DELETE</span>
+    <code class="path">/api/cases/{cid}</code>
+    <span class="api-name">删除用例</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">删除单条用例。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>cid</code></td><td>integer</td><td>是</td><td>-</td><td>用例ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "用例已删除",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-25">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/cases/batch-delete</code>
+    <span class="api-name">批量删除用例</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">按 ID 批量删除用例。请求体为整型 ID 数组，或对象 {"ids": [...]} 两种形式均可。</p>
+  <div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>ids</code></td><td>array&lt;integer&gt;</td><td>是</td><td>-</td><td>用例ID数组（请求体直接传数组 [1,2,3]，或对象 {"ids":[1,2,3]}）</td></tr></table><pre class='code'>{
+  "ids": []
+}</pre><div class='sub'>说明</div><ul class='notes'><li>Content-Type: application/json</li><li>请求体为顶层数组时直接传 [1,2,3]，无需包裹字段</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "已删除 5 条用例",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-26">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/cases/run</code>
+    <span class="api-name">快速执行用例</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">立即执行单条或批量选中的用例，返回执行任务ID。环境优先级：显式 env_id → 项目默认环境 → 项目首个环境。</p>
+  <div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>ids</code></td><td>array&lt;integer&gt;</td><td>否</td><td><code>[]</code></td><td>用例ID数组（批量执行）</td></tr><tr><td><code>case_id</code></td><td>integer</td><td>否</td><td><code>0</code></td><td>单条用例ID（单条执行）</td></tr><tr><td><code>env_id</code></td><td>integer</td><td>否</td><td>-</td><td>执行环境ID，不传则用项目默认/首个环境</td></tr></table><pre class='code'>{
+  "ids": [],
+  "case_id": 0,
+  "env_id": 0
+}</pre><div class='sub'>说明</div><ul class='notes'><li>任务异步执行，需轮询 /api/execution/{task_id}/status 获取进度</li><li>请求 URL = 环境 BaseURL + 接口路径；接口路径若已是 http(s) 完整地址则直接使用</li><li>项目无任何环境且接口路径非完整 URL 时，返回 400 提示先配置环境</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "执行任务已启动",
+  "data": {
+    "task_id": 12,
+    "total": 5
+  }
+}</pre>
+</div>
+<div class="api" id="api-27">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/projects/{pid}/cases/all</code>
+    <span class="api-name">用例全量列表</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">不分页返回项目下全部用例（含接口与模块信息）。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": [
+    {
+      "id": 1,
+      "name": "查询用户列表-正向-正常分页查询",
+      "module": "用户管理",
+      "method": "GET",
+      "path": "/api/users",
+      "case_type": "正向",
+      "priority": "P0"
+    }
+  ]
+}</pre>
+</div><h2 class='sec'><span class='sec-idx'>AI 配置与连通性测试、AI 用例生成、用例文档智能整理</span>AI 能力 <em>6 个接口</em></h2>
+<div class="api" id="api-28">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/ai/config</code>
+    <span class="api-name">获取 AI 配置</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">读取系统级 AI 配置，api_key 明文返回供前端回填，另附脱敏字段。</p>
+  <div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "model": "deepseek-chat",
+    "api_key": "sk-xxxx",
+    "api_key_masked": "sk-xx****xxxx",
+    "base_url": "https://api.deepseek.com/v1",
+    "timeout": 60,
+    "configured": true
+  }
+}</pre>
+</div>
+<div class="api" id="api-29">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/ai/config</code>
+    <span class="api-name">保存 AI 配置</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">保存模型、Key、BaseURL、超时时间，全局即时生效。</p>
+  <div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>model</code></td><td>string</td><td>否</td><td><code>deepseek-chat</code></td><td>模型标识</td></tr><tr><td><code>api_key</code></td><td>string</td><td>否</td><td><code></code></td><td>API Key</td></tr><tr><td><code>base_url</code></td><td>string</td><td>否</td><td><code>https://api.deepseek.com/v1</code></td><td>OpenAI 兼容接口地址</td></tr><tr><td><code>timeout</code></td><td>integer</td><td>否</td><td><code>60</code></td><td>请求超时（秒，5-600）</td></tr></table><pre class='code'>{
+  "model": "deepseek-chat",
+  "api_key": "",
+  "base_url": "https://api.deepseek.com/v1",
+  "timeout": 60
+}</pre><div class='sub'>说明</div><ul class='notes'><li>未配置 API Key 时，用例生成自动降级为内置规则引擎</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "AI 配置保存成功，已全局生效",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-30">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/ai/config/test</code>
+    <span class="api-name">测试 AI 连通性</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">用传入配置（或已保存配置）发起一次真实调用，验证可用性。</p>
+  <div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>model</code></td><td>string</td><td>否</td><td><code>deepseek-chat</code></td><td>模型标识</td></tr><tr><td><code>api_key</code></td><td>string</td><td>否</td><td><code></code></td><td>API Key</td></tr><tr><td><code>base_url</code></td><td>string</td><td>否</td><td><code>https://api.deepseek.com/v1</code></td><td>接口地址</td></tr><tr><td><code>timeout</code></td><td>integer</td><td>否</td><td><code>60</code></td><td>超时（秒）</td></tr></table><pre class='code'>{
+  "model": "deepseek-chat",
+  "api_key": "",
+  "base_url": "https://api.deepseek.com/v1",
+  "timeout": 60
+}</pre><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "success": true,
+    "message": "连接成功：模型响应正常"
+  }
+}</pre>
+</div>
+<div class="api" id="api-31">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/ai/generate</code>
+    <span class="api-name">AI 生成测试用例</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">为单个接口或整个项目批量生成测试用例；生成前自动清除该接口的旧 AI 用例，避免重复堆积。</p>
+  <div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>project_id</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr><tr><td><code>scope</code></td><td>string</td><td>否</td><td><code>all</code></td><td>生成范围</td></tr><tr><td><code>api_id</code></td><td>integer</td><td>否</td><td>-</td><td>接口ID（scope=single 时必填）</td></tr><tr><td><code>gen_type</code></td><td>string</td><td>否</td><td><code>full</code></td><td>生成类型</td></tr></table><pre class='code'>{
+  "project_id": 0,
+  "scope": "all",
+  "api_id": 0,
+  "gen_type": "full"
+}</pre><div class='sub'>说明</div><ul class='notes'><li>positive = 仅正向用例；full = 正向 + 反向 + 边界 + 异常</li><li>used_ai=false 表示未配置 Key，已降级使用内置规则引擎</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "成功生成 28 条用例",
+  "data": {
+    "api_count": 4,
+    "case_count": 28,
+    "used_ai": false,
+    "engine": "内置规则引擎（降级）"
+  }
+}</pre>
+</div>
+<div class="api" id="api-32">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/ai/organize/{pid}</code>
+    <span class="api-name">AI 整理用例文档</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">统一规范化项目下所有用例的命名、优先级与类型，并按【模块→接口→类型→优先级】归档。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "用例文档整理完成：共 28 条用例已按标准格式分类归档",
+  "data": {
+    "total": 28,
+    "normalized": 3,
+    "order_rule": "按 模块 → 接口 → 用例类型（正向/反向/边界/异常）→ 优先级（P0/P1/P2）自动分类归档"
+  }
+}</pre>
+</div>
+<div class="api" id="api-33">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/ai/models</code>
+    <span class="api-name">可选模型列表</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">返回系统内置可选择的模型清单。</p>
+  <div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": [
+    {
+      "value": "deepseek-chat",
+      "label": "DeepSeek Chat"
+    },
+    {
+      "value": "gpt-4o-mini",
+      "label": "GPT-4o mini"
+    },
+    {
+      "value": "qwen-max",
+      "label": "通义千问 Max"
+    },
+    {
+      "value": "custom",
+      "label": "自定义兼容模型"
+    }
+  ]
+}</pre>
+</div><h2 class='sec'><span class='sec-idx'>执行任务启动、实时状态/日志轮询、终止、失败重跑</span>测试执行 <em>4 个接口</em></h2>
+<div class="api" id="api-34">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/execution/start</code>
+    <span class="api-name">启动执行任务</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">按项目+环境+范围创建执行任务并立即异步启动，返回任务ID。</p>
+  <div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>project_id</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr><tr><td><code>env_id</code></td><td>integer</td><td>否</td><td>-</td><td>环境ID，不传则用默认环境</td></tr><tr><td><code>scope</code></td><td>string</td><td>否</td><td><code>all</code></td><td>执行范围</td></tr><tr><td><code>case_ids</code></td><td>array&lt;integer&gt;</td><td>否</td><td><code>[]</code></td><td>用例ID数组（scope=selected）</td></tr><tr><td><code>task_name</code></td><td>string</td><td>否</td><td><code></code></td><td>任务名称，留空自动生成</td></tr></table><pre class='code'>{
+  "project_id": 0,
+  "env_id": 0,
+  "scope": "all",
+  "case_ids": [],
+  "task_name": ""
+}</pre><div class='sub'>说明</div><ul class='notes'><li>scope=failed 时自动筛选上一次执行失败的用例</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "任务已启动",
+  "data": {
+    "task_id": 12,
+    "total": 28
+  }
+}</pre>
+</div>
+<div class="api" id="api-35">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/execution/{task_id}/status</code>
+    <span class="api-name">任务状态与实时日志</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">轮询接口：返回任务进度统计与增量日志（前端 1s 轮询实现实时滚动效果）。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>task_id</code></td><td>integer</td><td>是</td><td>-</td><td>任务ID</td></tr></table><div class='sub'>查询参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>log_after</code></td><td>integer</td><td>否</td><td><code>0</code></td><td>增量拉取日志起始ID，0=全部</td></tr></table><div class='sub'>说明</div><ul class='notes'><li>建议轮询间隔 1000ms，单次最多返回 200 条日志</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task": {
+      "id": 12,
+      "name": "测试任务-001",
+      "status": "running",
+      "total": 28,
+      "executed": 10,
+      "passed": 7,
+      "failed": 3,
+      "env_name": "本地Mock环境",
+      "started_at": "2026-10-27 11:30:00"
+    },
+    "running": true,
+    "logs": [
+      {
+        "id": 101,
+        "level": "INFO",
+        "message": "[3/28] 执行用例：用户登录-反向-密码错误"
+      }
+    ]
+  }
+}</pre>
+</div>
+<div class="api" id="api-36">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/execution/{task_id}/stop</code>
+    <span class="api-name">终止执行任务</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">向运行中的任务发送终止指令，已执行结果保留。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>task_id</code></td><td>integer</td><td>是</td><td>-</td><td>任务ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "终止指令已发送",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-37">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/execution/{task_id}/rerun-failed</code>
+    <span class="api-name">重跑失败用例</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">提取指定任务中的失败用例，创建新任务重新执行。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>task_id</code></td><td>integer</td><td>是</td><td>-</td><td>原任务ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "已创建重跑任务，共 19 条失败用例",
+  "data": {
+    "task_id": 13,
+    "total": 19
+  }
+}</pre>
+</div><h2 class='sec'><span class='sec-idx'>报告列表/详情、HTML/Excel/PDF 导出、删除</span>测试报告 <em>4 个接口</em></h2>
+<div class="api" id="api-38">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/reports/project/{pid}</code>
+    <span class="api-name">报告列表</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">分页返回项目下的历史执行任务（即测试报告），含通过率。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>查询参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>page</code></td><td>integer</td><td>否</td><td><code>1</code></td><td>页码</td></tr><tr><td><code>size</code></td><td>integer</td><td>否</td><td><code>10</code></td><td>每页条数</td></tr></table><div class='sub'>说明</div><ul class='notes'><li>`env_base_url` 为执行时的环境域名快照，用于确认该次执行打到哪台机器；环境被删除后 `env_deleted=true` 且域名无法回溯（仅保留名称）</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "total": 3,
+    "list": [
+      {
+        "id": 12,
+        "name": "测试任务-001",
+        "status": "completed",
+        "total": 28,
+        "executed": 28,
+        "passed": 9,
+        "failed": 19,
+        "pass_rate": 32.1,
+        "env_name": "本地Mock环境",
+        "env_base_url": "http://127.0.0.1:8099",
+        "env_deleted": false,
+        "created_at": "2026-10-27 11:30:00"
+      }
+    ]
+  }
+}</pre>
+</div>
+<div class="api" id="api-39">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/reports/{task_id}</code>
+    <span class="api-name">报告详情</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">返回报告全量数据：任务概览、通过率、每条用例执行结果、模块成功率、完整执行日志。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>task_id</code></td><td>integer</td><td>是</td><td>-</td><td>任务ID</td></tr></table><div class='sub'>说明</div><ul class='notes'><li>`results[].request_info.url` 为环境域名 + 接口路径拼接后的最终请求地址，是确认「实际打到哪个环境」的最直接证据</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task": {
+      "id": 12,
+      "name": "测试任务-001",
+      "status": "completed",
+      "total": 28,
+      "executed": 28,
+      "passed": 9,
+      "failed": 19,
+      "env_name": "本地Mock环境",
+      "env_base_url": "http://127.0.0.1:8099",
+      "env_deleted": false
+    },
+    "pass_rate": 32.1,
+    "results": [
+      {
+        "case_id": 1,
+        "case_name": "查询用户列表-正向-正常分页查询",
+        "module": "用户管理",
+        "method": "GET",
+        "path": "/api/users",
+        "status": "passed",
+        "status_code": 200,
+        "duration_ms": 12,
+        "request_info": {
+          "method": "get",
+          "url": "http://127.0.0.1:8099/api/users",
+          "headers": {},
+          "params": {
+            "page": 1
+          }
+        },
+        "response": {
+          "code": 0,
+          "data": {}
+        },
+        "assertions": [
+          {
+            "name": "状态码校验",
+            "expected": 200,
+            "actual": 200,
+            "passed": true
+          }
+        ],
+        "fail_reason": ""
+      }
+    ],
+    "module_stats": [
+      {
+        "module": "鉴权模块",
+        "total": 6,
+        "passed": 6,
+        "rate": 100.0
+      }
+    ],
+    "logs": [
+      {
+        "id": 1,
+        "level": "INFO",
+        "message": "任务启动：共 28 条用例"
+      },
+      {
+        "id": 2,
+        "level": "INFO",
+        "message": "执行环境：本地Mock环境（http://127.0.0.1:8099）　超时 10s　重试 1次"
+      }
+    ]
+  }
+}</pre>
+</div>
+<div class="api" id="api-40">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/reports/{task_id}/export</code>
+    <span class="api-name">导出报告文件</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">导出测试报告为 HTML / Excel / PDF 文件（二进制流）。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>task_id</code></td><td>integer</td><td>是</td><td>-</td><td>任务ID</td></tr></table><div class='sub'>查询参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>fmt</code></td><td>string</td><td>否</td><td><code>html</code></td><td>导出格式</td></tr><tr><td><code>download</code></td><td>integer</td><td>否</td><td><code>1</code></td><td>1=下载附件，0=HTML在线预览（仅html）</td></tr></table><div class='sub'>响应</div><p>返回文件二进制流，响应头 <code>Content-Disposition: attachment</code>。</p>
+</div>
+<div class="api" id="api-41">
+  <div class="api-head">
+    <span class="m m-DELETE">DELETE</span>
+    <code class="path">/api/reports/{task_id}</code>
+    <span class="api-name">删除报告</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">删除报告，级联清除用例结果与执行日志。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>task_id</code></td><td>integer</td><td>是</td><td>-</td><td>任务ID</td></tr></table><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "报告已删除",
+  "data": null
+}</pre>
+</div><h2 class='sec'><span class='sec-idx'>首页全局统计数据聚合</span>仪表盘 <em>1 个接口</em></h2>
+<div class="api" id="api-42">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/dashboard</code>
+    <span class="api-name">首页统计数据</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">聚合返回项目数、接口数、用例数、近7天通过率趋势、用例状态分布、最近10条任务。</p>
+  <div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "projects": 1,
+    "apis": 4,
+    "cases": 28,
+    "week_rate": 32.1,
+    "trend": [
+      {
+        "date": "10-27",
+        "executed": 28,
+        "passed": 9,
+        "rate": 32.1
+      }
+    ],
+    "pie": {
+      "passed": 9,
+      "failed": 19,
+      "skipped": 0,
+      "pending": 0
+    },
+    "recent": [
+      {
+        "id": 12,
+        "name": "测试任务-001",
+        "pass_rate": 32.1
+      }
+    ]
+  }
+}</pre>
+</div><h2 class='sec'><span class='sec-idx'>菜单目录、角色管理（菜单权限模板）与用户管理（分配角色与菜单权限）</span>用户与权限 <em>9 个接口</em></h2>
+<div class="api" id="api-43">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/menus</code>
+    <span class="api-name">菜单目录</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">返回平台全部功能菜单（权限最小单元）的定义，含 key / 标题 / 图标 / 路由。</p>
+  <div class='sub'>说明</div><ul class='notes'><li>所有管理接口均要求调用方拥有 users 菜单权限（即超级管理员）</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": [
+    {
+      "key": "dashboard",
+      "title": "首页仪表盘",
+      "icon": "DataLine",
+      "path": "/dashboard"
+    }
+  ]
+}</pre>
+</div>
+<div class="api" id="api-44">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/roles</code>
+    <span class="api-name">角色列表</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">返回全部角色及其菜单权限集合，内置角色（is_system=true）不可删除。</p>
+  <div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": [
+    {
+      "id": 1,
+      "name": "超级管理员",
+      "code": "admin",
+      "description": "拥有平台全部功能与系统配置权限",
+      "menu_keys": [
+        "dashboard",
+        "projects",
+        "envs",
+        "apis",
+        "ai-generate",
+        "cases",
+        "execution",
+        "reports",
+        "ai-config",
+        "users"
+      ],
+      "is_system": true
+    }
+  ]
+}</pre>
+</div>
+<div class="api" id="api-45">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/roles</code>
+    <span class="api-name">创建角色</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">新建角色并配置其菜单权限集合。</p>
+  <div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>name</code></td><td>string</td><td>是</td><td>-</td><td>角色名称</td></tr><tr><td><code>code</code></td><td>string</td><td>是</td><td>-</td><td>角色编码（英文唯一标识）</td></tr><tr><td><code>description</code></td><td>string</td><td>否</td><td><code></code></td><td>角色描述</td></tr><tr><td><code>menu_keys</code></td><td>array</td><td>否</td><td><code>[]</code></td><td>菜单 key 取自「菜单目录」接口，对应前端左侧功能入口；权限模型见下方说明。</td></tr></table><pre class='code'>{
+  "name": "",
+  "code": "",
+  "description": "",
+  "menu_keys": "[]"
+}</pre><div class='sub'>说明</div><ul class='notes'><li>code 不可与已有角色重复</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "角色创建成功",
+  "data": {
+    "id": 4
+  }
+}</pre>
+</div>
+<div class="api" id="api-46">
+  <div class="api-head">
+    <span class="m m-PUT">PUT</span>
+    <code class="path">/api/roles/{rid}</code>
+    <span class="api-name">编辑角色</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">修改角色名称、描述与菜单权限；内置角色的 code 不可修改。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>rid</code></td><td>integer</td><td>是</td><td>-</td><td>角色ID</td></tr></table><div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>name</code></td><td>string</td><td>是</td><td>-</td><td>角色名称</td></tr><tr><td><code>code</code></td><td>string</td><td>否</td><td><code></code></td><td>角色编码（内置角色忽略）</td></tr><tr><td><code>description</code></td><td>string</td><td>否</td><td><code></code></td><td>角色描述</td></tr><tr><td><code>menu_keys</code></td><td>array</td><td>否</td><td><code>[]</code></td><td>菜单 key 取自「菜单目录」接口，对应前端左侧功能入口；权限模型见下方说明。</td></tr></table><pre class='code'>{
+  "name": "",
+  "code": "",
+  "description": "",
+  "menu_keys": "[]"
+}</pre><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "角色更新成功",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-47">
+  <div class="api-head">
+    <span class="m m-DELETE">DELETE</span>
+    <code class="path">/api/roles/{rid}</code>
+    <span class="api-name">删除角色</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">删除自定义角色；内置角色不可删，已绑定用户的角色需先调整用户后再删。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>rid</code></td><td>integer</td><td>是</td><td>-</td><td>角色ID</td></tr></table><div class='sub'>说明</div><ul class='notes'><li>内置角色不可删除</li><li>仍有用户绑定的角色不可删除</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "角色已删除",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-48">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/users</code>
+    <span class="api-name">用户列表</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">返回全部用户（不含密码），附带角色名称与实际菜单权限。</p>
+  <div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": [
+    {
+      "id": 1,
+      "username": "admin",
+      "nickname": "管理员",
+      "role_id": 1,
+      "role_name": "超级管理员",
+      "status": "active",
+      "menus": [
+        "dashboard",
+        "projects",
+        "envs",
+        "apis",
+        "ai-generate",
+        "cases",
+        "execution",
+        "reports",
+        "ai-config",
+        "users"
+      ],
+      "created_at": "2026-10-27 11:20:03"
+    }
+  ]
+}</pre>
+</div>
+<div class="api" id="api-49">
+  <div class="api-head">
+    <span class="m m-POST">POST</span>
+    <code class="path">/api/users</code>
+    <span class="api-name">创建用户</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">新建用户并分配角色；菜单权限优先使用传入的 menu_keys，为空则继承所选角色权限。</p>
+  <div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>username</code></td><td>string</td><td>是</td><td>-</td><td>登录用户名（唯一）</td></tr><tr><td><code>password</code></td><td>string</td><td>是</td><td>-</td><td>初始密码（至少6位）</td></tr><tr><td><code>nickname</code></td><td>string</td><td>否</td><td><code></code></td><td>昵称</td></tr><tr><td><code>role_id</code></td><td>integer</td><td>是</td><td>-</td><td>所属角色ID</td></tr><tr><td><code>status</code></td><td>string</td><td>否</td><td><code>active</code></td><td>账号状态：active / disabled</td></tr><tr><td><code>menu_keys</code></td><td>array</td><td>否</td><td><code>[]</code></td><td>菜单 key 取自「菜单目录」接口，对应前端左侧功能入口；权限模型见下方说明。</td></tr></table><pre class='code'>{
+  "username": "",
+  "password": "",
+  "nickname": "",
+  "role_id": 0,
+  "status": "active",
+  "menu_keys": "[]"
+}</pre><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "用户创建成功",
+  "data": {
+    "id": 2
+  }
+}</pre>
+</div>
+<div class="api" id="api-50">
+  <div class="api-head">
+    <span class="m m-PUT">PUT</span>
+    <code class="path">/api/users/{uid}</code>
+    <span class="api-name">编辑用户</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">修改用户昵称、密码（留空则不改）、角色、状态与菜单权限。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>uid</code></td><td>integer</td><td>是</td><td>-</td><td>用户ID</td></tr></table><div class='sub'>请求体（application/json）</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>nickname</code></td><td>string</td><td>否</td><td><code></code></td><td>昵称</td></tr><tr><td><code>password</code></td><td>string</td><td>否</td><td><code></code></td><td>新密码（留空不修改，至少6位）</td></tr><tr><td><code>role_id</code></td><td>integer</td><td>否</td><td>-</td><td>所属角色ID</td></tr><tr><td><code>status</code></td><td>string</td><td>否</td><td><code>active</code></td><td>账号状态：active / disabled</td></tr><tr><td><code>menu_keys</code></td><td>array</td><td>否</td><td><code>[]</code></td><td>菜单 key 取自「菜单目录」接口，对应前端左侧功能入口；权限模型见下方说明。</td></tr></table><pre class='code'>{
+  "nickname": "",
+  "password": "",
+  "role_id": 0,
+  "status": "active",
+  "menu_keys": "[]"
+}</pre><div class='sub'>说明</div><ul class='notes'><li>不能禁用或变更当前登录账号自身</li><li>至少需保留一名拥有 users 权限的管理员</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "用户更新成功",
+  "data": null
+}</pre>
+</div>
+<div class="api" id="api-51">
+  <div class="api-head">
+    <span class="m m-DELETE">DELETE</span>
+    <code class="path">/api/users/{uid}</code>
+    <span class="api-name">删除用户</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">删除指定用户，需管理员权限。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>uid</code></td><td>integer</td><td>是</td><td>-</td><td>用户ID</td></tr></table><div class='sub'>说明</div><ul class='notes'><li>不能删除当前登录账号</li><li>至少需保留一名管理员</li></ul><div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "用户已删除",
+  "data": null
+}</pre>
+</div><h2 class='sec'><span class='sec-idx'>健康检查、操作日志、用例文档导出</span>系统服务 <em>3 个接口</em></h2>
+<div class="api" id="api-52">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/health</code>
+    <span class="api-name">健康检查</span>
+    <span class="badge noauth">免鉴权</span>
+  </div>
+  <p class="desc">服务存活探测，无需鉴权。</p>
+  <div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "status": "running",
+    "product": "AI驱动Web接口自动化测试平台"
+  }
+}</pre>
+</div>
+<div class="api" id="api-53">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/logs</code>
+    <span class="api-name">操作日志</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">返回最近 50 条系统操作日志。</p>
+  <div class='sub'>响应示例</div><pre class='code'>{
+  "code": 0,
+  "msg": "ok",
+  "data": [
+    {
+      "id": 1,
+      "username": "admin",
+      "action": "AI生成用例",
+      "detail": "项目#1 接口4个 生成用例28条",
+      "created_at": "2026-10-27 11:25:00"
+    }
+  ]
+}</pre>
+</div>
+<div class="api" id="api-54">
+  <div class="api-head">
+    <span class="m m-GET">GET</span>
+    <code class="path">/api/projects/{pid}/cases/export</code>
+    <span class="api-name">导出用例文档</span>
+    <span class="badge auth">需鉴权</span>
+  </div>
+  <p class="desc">导出项目用例文档为 Word / Excel / PDF 文件（二进制流）。</p>
+  <div class='sub'>路径参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>pid</code></td><td>integer</td><td>是</td><td>-</td><td>项目ID</td></tr></table><div class='sub'>查询参数</div><table><tr><th>参数名</th><th>类型</th><th>必填</th><th>默认值</th><th>说明</th></tr><tr><td><code>fmt</code></td><td>string</td><td>否</td><td><code>word</code></td><td>导出格式</td></tr></table><div class='sub'>响应</div><p>返回文件二进制流，响应头 <code>Content-Disposition: attachment</code>。</p>
+</div>
+</main></div></body></html>

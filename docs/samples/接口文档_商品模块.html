@@ -1,0 +1,20 @@
+<html><head><meta charset="utf-8"></head><body>
+<h2>商品模块</h2>
+<h3>商品详情</h3>
+<p>接口名称：查询商品详情</p>
+<p>接口路径：/api/goods/detail</p>
+<p>请求方式：POST</p>
+<table>
+<tr><th>参数名</th><th>类型</th><th>必填</th><th>说明</th><th>默认值</th></tr>
+<tr><td>goods_id</td><td>int</td><td>是</td><td>商品ID</td><td>1001</td></tr>
+</table>
+<h3>商品上下架</h3>
+<p>接口名称：商品上下架</p>
+<p>接口路径：/api/goods/status</p>
+<p>请求方式：PUT</p>
+<table>
+<tr><th>参数名</th><th>类型</th><th>必填</th><th>说明</th><th>默认值</th></tr>
+<tr><td>goods_id</td><td>int</td><td>是</td><td>商品ID</td><td>1001</td></tr>
+<tr><td>on_sale</td><td>boolean</td><td>是</td><td>是否上架</td><td>true</td></tr>
+</table>
+</body></html>

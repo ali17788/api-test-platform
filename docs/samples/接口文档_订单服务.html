@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>订单服务接口文档</title></head>
+<body>
+<h1>订单服务 API</h1>
+<h2>订单模块</h2>
+<h3>创建订单</h3>
+<p>POST /api/orders</p>
+<table>
+<tr><th>参数名</th><th>类型</th><th>必填</th><th>说明</th><th>默认值</th></tr>
+<tr><td>product_id</td><td>int</td><td>是</td><td>商品ID</td><td>1</td></tr>
+<tr><td>quantity</td><td>int</td><td>是</td><td>购买数量</td><td>2</td></tr>
+</table>
+<h3>查询订单列表</h3>
+<p>GET /api/orders</p>
+<table>
+<tr><th>参数名</th><th>类型</th><th>必填</th><th>说明</th><th>默认值</th></tr>
+<tr><td>page</td><td>int</td><td>否</td><td>页码</td><td>1</td></tr>
+<tr><td>status</td><td>string</td><td>否</td><td>订单状态</td><td>paid</td></tr>
+</table>
+<h2>支付模块</h2>
+<h3>发起支付</h3>
+<p>POST /api/pay</p>
+<table>
+<tr><th>参数名</th><th>类型</th><th>必填</th><th>说明</th><th>默认值</th></tr>
+<tr><td>order_id</td><td>int</td><td>是</td><td>订单ID</td><td>1</td></tr>
+<tr><td>channel</td><td>string</td><td>是</td><td>支付渠道</td><td>wechat</td></tr>
+</table>
+</body></html>
