@@ -1,0 +1,22 @@
+# Render 部署蓝图（Blueprint）
+# 用法：Render 控制台 → New → Blueprint → 连接本仓库 → 应用此文件
+services:
+  - type: web
+    name: api-test-platform
+    runtime: python
+    plan: free
+    region: oregon            # 可选：singapore / frankfurt 等
+    pythonVersion: "3.11"
+    # requirements.txt 由 Render Python 构建自动安装，无需显式 buildCommand
+    startCommand: "bash start_server.sh"
+    healthCheckPath: /api/health
+    envVars:
+      - key: PORT
+        sync: false           # Render 自动注入，无需填写
+      - key: PYTHON_VERSION
+        value: "3.11"
+      # 可选：如需 AI 用例生成联网，填写你的模型密钥（留空则走内置规则引擎）
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_BASE_URL
+        sync: false
