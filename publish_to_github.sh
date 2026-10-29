@@ -13,7 +13,7 @@
 #      → Generate new token(classic) → 勾选 repo → Generate
 #      然后在本机（具备正常公网访问的机器）执行：
 #      export GITHUB_TOKEN=ghp_xxxxxxxxxxxx     # 你的 PAT
-#      export GITHUB_USER=elsa_li9090           # 你的 GitHub 用户名
+#      export GITHUB_USER=ali17788           # 你的 GitHub 用户名
 #      bash publish_to_github.sh
 #
 # ⚠️ 注意：GitHub 自 2021-08 起已禁用「账号密码」做 git push，必须使用
@@ -44,7 +44,7 @@ if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
 else
   echo "==> 未检测到已登录的 gh CLI，回退到 Token 方式"
   : "${GITHUB_TOKEN:?❌ 请先设置环境变量 GITHUB_TOKEN（GitHub Personal Access Token，需 repo 权限）}"
-  : "${GITHUB_USER:?❌ 请设置环境变量 GITHUB_USER 为你的 GitHub 用户名，例如 elsa_li9090}"
+  : "${GITHUB_USER:?❌ 请设置环境变量 GITHUB_USER 为你的 GitHub 用户名，例如 ali17788}"
   USE_GH=0
 fi
 
