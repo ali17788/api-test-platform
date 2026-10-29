@@ -15,10 +15,10 @@
 - **方式 B（用 Token）**：
   ```bash
   export GITHUB_TOKEN=ghp_你的PAT
-  export GITHUB_USER=elsa_li9090
+  export GITHUB_USER=ali17788
   bash publish_to_github.sh
   ```
-完成后仓库地址：`https://github.com/elsa_li9090/api-test-platform`
+完成后仓库地址：`https://github.com/ali17788/api-test-platform`
 
 ---
 
@@ -26,7 +26,7 @@
 
 1. 打开 https://render.com → 注册/登录（可用 GitHub 账号授权）。
 2. 控制台 → **New** → **Blueprint**。
-3. 连接 GitHub 仓库 `elsa_li9090/api-test-platform`，Render 会自动读取仓库根目录的 **`render.yaml`**。
+3. 连接 GitHub 仓库 `ali17788/api-test-platform`，Render 会自动读取仓库根目录的 **`render.yaml`**。
 4. 确认配置：
    - Runtime: Python 3.11
    - Build: 自动 `pip install -r requirements.txt`
@@ -75,7 +75,7 @@
 ## 本地运行（非云端）
 
 ```bash
-git clone https://github.com/elsa_li9090/api-test-platform.git
+git clone https://github.com/ali17788/api-test-platform.git
 cd api-test-platform
 bash start.sh          # 自动建 venv、装依赖、构建前端（仅首次）、启动
 # 浏览器访问 http://127.0.0.1:8000   （admin / admin123）
