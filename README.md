@@ -174,8 +174,8 @@ bash publish_to_github.sh              # 自动创建公开仓库并推送当前
 克隆后本地运行：
 
 ```bash
-git clone https://github.com/<你的用户名>/<仓库名>.git
-cd <仓库名>
+git clone https://github.com/ali17788/api-test-platform.git
+cd api-test-platform
 bash start.sh          # 自动建 venv、装依赖、构建前端、启动服务
 # 浏览器访问 http://127.0.0.1:8000  （演示账号 admin / admin123）
 ```
